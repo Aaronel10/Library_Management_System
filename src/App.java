@@ -7,6 +7,19 @@ public class App {
 
 
     public static void main(String[] args) {
+        librarian omar = new librarian("omar", "242","librarian");
+        User aaron = new User("Aaron", "24", "user");
+        omar.addBook("percy", "riordan", "41", "fantasy");
+        ArrayList<book> my_book = aaron.searchBook("percy", true);
+        for(book novel: my_book)
+        {
+            System.out.println(novel.getName());
+        }
+
+    }
+
+    public static void login()
+    {
         try
         {
             //create instance of the CreateLoginForm
@@ -20,7 +33,6 @@ public class App {
             JOptionPane.showMessageDialog(null, e.getMessage());
         }
     }
-
 
 
 }

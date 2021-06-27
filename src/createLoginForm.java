@@ -2,6 +2,8 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 
 
 //create CreateLoginForm class to create login form  
@@ -13,6 +15,10 @@ class CreateLoginForm extends JFrame implements ActionListener
   JPanel newPanel;
   JLabel usernameLabel, passwordLabel;
   final JTextField textField1, textField2;
+  ArrayList<User> users = new ArrayList<>();
+  Admin aaron = new Admin("aaronelharo@hotmail.com", "password123", "administrator");
+
+
 
   //calling constructor
     CreateLoginForm()
@@ -51,6 +57,8 @@ class CreateLoginForm extends JFrame implements ActionListener
 
         if(usernameValue.equals("aaronel@gmail.com") && passwordValue.equals("password123")) //means they entered the correct credentials
         {
+
+
 
 
         } else
