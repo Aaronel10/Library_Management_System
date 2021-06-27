@@ -2,11 +2,13 @@ public class book {
     private String name;
     private String author;
     private String ID;
+    private String genre;
 
-    public book(String name, String author, String ID){
+    public book(String name, String author, String ID, String genre){
         this.name = name;
         this.author = author;
         this.ID = ID;
+        this.genre = genre;
     }
 
 

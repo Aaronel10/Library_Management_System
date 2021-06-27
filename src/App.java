@@ -1,17 +1,26 @@
+import javax.swing.*;
 import java.util.ArrayList;
+import java.util.Scanner;
+
 
 public class App {
 
 
     public static void main(String[] args) {
-        librarian Omar = new librarian("Omar123", "Password123");
-        Omar.addBook("Twilight", "Random Author", "12515");
-        Omar.addBook("Percy Jackson", "Riordan", "51421");
-        Omar.viewBooks();
-        System.out.println("Delete book 2");
-        Omar.deleteBook("51421");
-        Omar.viewBooks();
-
+        try
+        {
+            //create instance of the CreateLoginForm
+            CreateLoginForm form = new CreateLoginForm();
+            form.setSize(500,200);  //set size of the frame
+            form.setVisible(true);  //make form visible to the user
+        }
+        catch(Exception e)
+        {
+            //handle exception
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
     }
+
+
 
 }
