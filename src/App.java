@@ -1,5 +1,7 @@
 import javax.swing.*;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Scanner;
 
 
@@ -7,15 +9,14 @@ public class App {
 
 
     public static void main(String[] args) {
-        librarian omar = new librarian("omar", "242","librarian");
-        User aaron = new User("Aaron", "24", "user");
-        omar.addBook("percy", "riordan", "41", "fantasy");
-        ArrayList<book> my_book = aaron.searchBook("percy", true);
-        for(book novel: my_book)
-        {
-            System.out.println(novel.getName());
-        }
-
+        librarian omar = new librarian("omar", "242", "librarian");
+        omar.addBook("percy", "riordan", "4122", "fantasy");
+        omar.addBook("zeus", "riordan", "4421", "fantasy");
+        omar.addBook("hades", "riordan", "4242", "fantasy");
+        omar.issue_book("hades");
+        omar.viewBooks();
+        System.out.println("_____Books not in stock______");
+        omar.viewBooksThatAreIssued();
     }
 
     public static void login()

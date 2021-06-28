@@ -66,8 +66,15 @@ public class User extends currentStock{
 
     protected int searchByTitle(String title)
     {
-        int index = currentBooks.indexOf(title);
-        return index;
+        for(book novel: currentBooks)
+        {
+            if(novel.getName()!= null && novel.getName().equalsIgnoreCase(title)){
+                int index = currentBooks.indexOf(novel);
+                return index;
+            }
+        }
+
+        return -1;
     }
 
 
