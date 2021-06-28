@@ -46,23 +46,16 @@ public class User extends currentStock{
         System.exit(1);
     }
 
-    protected ArrayList<book> searchBook(String arg, boolean isTitle) // Is either title or autho name, if boolean is false its author name
+    protected ArrayList<book> searchBookByAuthor(String author) // returns a array list of books that have the same author
     {
         ArrayList<book> booksThatMatch = new ArrayList<>();
         for(book novel: currentBooks)
         {
-            if(!isTitle)
-            {
-                if(novel.getAuthor().equalsIgnoreCase(arg))
+                if(novel.getAuthor().equalsIgnoreCase(author))
                 {
                     booksThatMatch.add(novel);
                 }
-            } else{
-                if(novel.getName().equalsIgnoreCase(arg))
-                {
-                    booksThatMatch.add(novel);
-                }
-            }
+
         }
         if(booksThatMatch.size() == 0)
         {
@@ -70,6 +63,13 @@ public class User extends currentStock{
         }
         return booksThatMatch;
     }
+
+    protected int searchByTitle(String title)
+    {
+        int index = currentBooks.indexOf(title);
+        return index;
+    }
+
 
 
 }
