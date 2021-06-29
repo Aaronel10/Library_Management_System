@@ -3,7 +3,7 @@ import java.util.ArrayList;
 public class User extends currentStock{
     private String username;
     private String password;
-
+    private String permissions;
 
 
     public String getPermissions() {
@@ -14,7 +14,6 @@ public class User extends currentStock{
         this.permissions = permissions;
     }
 
-    private String permissions;
 
     public String getUsername() {
         return username;

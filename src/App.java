@@ -14,8 +14,10 @@ public class App {
         omar.addBook("zeus", "riordan", "4421", "fantasy");
         omar.addBook("hades", "riordan", "4242", "fantasy");
         omar.issue_book("hades");
-        omar.viewBooks();
-        System.out.println("_____Books not in stock______");
+        //omar.viewBooksThatAreIssued();
+        System.out.println("Current stock");
+        //omar.viewBooks();
+        omar.return_book("hades");
         omar.viewBooksThatAreIssued();
     }
 
