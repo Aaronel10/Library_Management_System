@@ -6,7 +6,7 @@ public class currentStock {
     protected ArrayList<bookOutOnIssue> booksOutOnIssue = new ArrayList<>();
 
 
-    public ArrayList<book> getCurrentBooks() {
+    protected ArrayList<book> getCurrentBooks() {
         return currentBooks;
     }
 

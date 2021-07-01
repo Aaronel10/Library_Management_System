@@ -16,7 +16,7 @@ class CreateLoginForm extends JFrame implements ActionListener
   JLabel usernameLabel, passwordLabel;
   final JTextField textField1, textField2;
   ArrayList<User> users = new ArrayList<>();
-  Admin aaron = new Admin("aaronelharo@hotmail.com", "password123", "administrator");
+  Admin aaron = new Admin("aaronel@gmail.com", "password123", "administrator");
 
 
 
@@ -45,10 +45,10 @@ class CreateLoginForm extends JFrame implements ActionListener
 
         // set border to panel
         add(newPanel, BorderLayout.CENTER);
-
+        setTitle("Login Form");
         // perform an action on button click
         button1.addActionListener(this); // add action lister to button this just calls the action performed function when it gets clicked
-        setTitle("Login Form");
+
     }
     public void actionPerformed(ActionEvent ae)
     {
@@ -57,15 +57,19 @@ class CreateLoginForm extends JFrame implements ActionListener
 
         if(usernameValue.equals("aaronel@gmail.com") && passwordValue.equals("password123")) //means they entered the correct credentials
         {
-
-
-
+            JOptionPane.showMessageDialog(this, "Login successful");
 
         } else
         {
             //show error
-            System.out.println("Enter valid username and password");
+            JOptionPane.showMessageDialog(this, "Not valid credentials");
+            System.exit(0);
+
         }
+
+        JComponent comp = (JComponent) ae.getSource();
+        Window win = SwingUtilities.getWindowAncestor(comp);
+        win.dispose();
 
     }
 

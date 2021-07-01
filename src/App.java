@@ -1,25 +1,48 @@
 import javax.swing.*;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Scanner;
+import java.util.*;
 
 
 public class App {
-
+    public static Scanner input = new Scanner(System.in);
 
     public static void main(String[] args) {
-        librarian omar = new librarian("omar", "242", "librarian");
-        omar.addBook("percy", "riordan", "4122", "fantasy");
-        omar.addBook("zeus", "riordan", "4421", "fantasy");
-        omar.addBook("hades", "riordan", "4242", "fantasy");
-        omar.issue_book("hades");
-        //omar.viewBooksThatAreIssued();
-        System.out.println("Current stock");
-        //omar.viewBooks();
-        omar.return_book("hades");
-        omar.viewBooksThatAreIssued();
+        // create user interface
+        int response = checkUser();
+        if (response == 1)
+        {
+            librarianApp.runLibrarianMenu();
+        } else
+        {
+            userApp.runUserMenu();
+        }
     }
+
+    private static int checkUser() {
+        int index = -1;
+        System.out.printf("Press 0 for User or 1 for Librarian\n");
+        do{
+            try{
+                index = input.nextInt();
+            } catch (InputMismatchException e)
+            {
+                System.out.println("Answer must be between 0 and 1 inclusive\n");
+            } finally {
+                input.nextLine();
+            }
+        } while (index != 1 && index != 0);
+        return index;
+    }
+
+    private void menu()
+    {
+        while(true)
+        {
+
+
+
+        }
+    }
+
 
     public static void login()
     {
@@ -36,6 +59,7 @@ public class App {
             JOptionPane.showMessageDialog(null, e.getMessage());
         }
     }
+
 
 
 }
