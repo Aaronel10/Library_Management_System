@@ -10,23 +10,9 @@ public class App{
     public static Scanner input = new Scanner(System.in);
 
 
-    public static void main(String[] args) {
-      login();
-
-    }
-
-
-
-
-    private void menu()
-    {
-        while(true)
-        {
-
-
-
+        public static void main(String[] args) {
+            login();
         }
-    }
 
 
     public static void login()

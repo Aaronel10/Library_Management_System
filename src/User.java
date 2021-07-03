@@ -1,80 +1,92 @@
+import java.sql.*;
 import java.util.ArrayList;
+import java.util.Scanner;
 
-public class User extends currentStock{
-    private String username;
-    private String password;
-    private String permissions;
-
-
-    public String getPermissions() {
-        return permissions;
-    }
-
-    public void setPermissions(String permissions) {
-        this.permissions = permissions;
-    }
+public class User {
+    private static Scanner input = new Scanner(System.in);
 
 
-    public String getUsername() {
-        return username;
-    }
+    public static void viewBooks() throws Exception{
+        try {
+            Connection conn = getConnection();
+            Statement st = conn.createStatement();
+            ResultSet rs = st.executeQuery("SELECT * FROM current_inventory");
+            ResultSetMetaData rsmd = rs.getMetaData();
+            int columnNumbers = rsmd.getColumnCount();
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-
-    User(String username, String password, String permissions)
-    {
-        this.username = username;
-        this.password = password;
-        this.permissions = permissions;
-
-    }
-    User()
-    {
-        System.out.println("Error need information to create account");
-        System.exit(1);
-    }
-
-    protected ArrayList<book> searchBookByAuthor(String author) // returns a array list of books that have the same author
-    {
-        ArrayList<book> booksThatMatch = new ArrayList<>();
-        for(book novel: currentBooks)
-        {
-                if(novel.getAuthor().equalsIgnoreCase(author))
-                {
-                    booksThatMatch.add(novel);
+            //iterate through data and display it
+            while(rs.next())
+            {
+                for (int i = 1; i <+ columnNumbers; i++) {
+                    System.out.print(rs.getString(i) + " ");
                 }
-
-        }
-        if(booksThatMatch.size() == 0)
-        {
-            System.out.println("No matches found\n");
-        }
-        return booksThatMatch;
-    }
-
-    protected int searchByTitle(String title)
-    {
-        for(book novel: currentBooks)
-        {
-            if(novel.getName()!= null && novel.getName().equalsIgnoreCase(title)){
-                int index = currentBooks.indexOf(novel);
-                return index;
+                System.out.println();
             }
-        }
 
-        return -1;
+            conn.close();
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+        }
     }
+
+
+    public static void searchBook()
+    {
+        try{
+            Connection conn = getConnection();
+            System.out.printf("Enter Book Id:");
+            int id = input.nextInt();
+            PreparedStatement st = conn.prepareStatement("SELECT * FROM current_inventory WHERE book_id = " + id);
+            ResultSet rs = st.executeQuery();
+            while(rs.next())
+            {
+                System.out.println(rs.getString("Title"));
+            }
+            conn.close();
+        }catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+
+    public static Connection getConnection() throws Exception{
+        try {
+            Connection connection = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/library_database", "root", "rootpassword");
+            return connection;
+        } catch (Exception e)
+        {
+        e.printStackTrace();
+        }
+        return null;
+    }
+
+
+    public static void view_issued_books()
+    {
+        try{
+            Connection conn = getConnection();
+            Statement st = conn.createStatement();
+            ResultSet rs = st.executeQuery("SELECT * FROM current_inventory WHERE Is_Availible=0");
+            ResultSetMetaData rsmd = rs.getMetaData();
+            int columnNumbers = rsmd.getColumnCount();
+
+            //iterate through data and display it
+            while(rs.next())
+            {
+                for (int i = 1; i <+ columnNumbers; i++) {
+                    System.out.print(rs.getString(i) + " ");
+                }
+                System.out.println();
+            }
+
+            conn.close();
+        }catch (Exception exception)
+        {
+            exception.printStackTrace();
+        }
+    }
+
 
 
 

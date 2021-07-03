@@ -20,7 +20,7 @@ class CreateLoginForm extends JFrame implements ActionListener
   JLabel usernameLabel, passwordLabel;
   final JTextField textField1, textField2;
   ArrayList<User> users = new ArrayList<>();
-  Admin aaron = new Admin("aaronel@gmail.com", "password123", "administrator");
+  // librarian aaron = new librarian("aaronel@gmail.com", "password123", "administrator");
   public boolean isLibrarian;
 
   JComboBox cb;
@@ -91,7 +91,6 @@ class CreateLoginForm extends JFrame implements ActionListener
             }
             ResultSet resultSet = statement.executeQuery("select username, password from " + src);
 
-
             while(resultSet.next())
             {
                 if(resultSet.getString(1)!= null && resultSet.getString(1).equals(usernameValue))
@@ -103,6 +102,24 @@ class CreateLoginForm extends JFrame implements ActionListener
                         JComponent comp = (JComponent) ae.getSource();
                         Window win = SwingUtilities.getWindowAncestor(comp);
                         win.dispose();
+                        if(isLibrarian)
+                        {
+                            librarian_menu ob = new librarian_menu();
+                            JFrame frame = new JFrame("librarian_menu");
+                            frame.setContentPane(new librarian_menu().panel_main);
+                            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                            frame.pack();
+                            frame.setVisible(true);
+                        } else
+                        { // put user menu here
+                            user_menu ob = new user_menu();
+                            JFrame frame = new JFrame("user-menu");
+                            frame.setContentPane(new user_menu().userPanel);
+                            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                            frame.pack();
+                            frame.setVisible(true);
+
+                        }
                         return;
                     }
                 }

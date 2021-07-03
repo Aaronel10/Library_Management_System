@@ -1,128 +1,92 @@
-import java.util.ArrayList;
-import java.util.Date;
+import java.sql.*;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+import java.util.Calendar;
 import java.util.Scanner;
 
-public class librarian extends User {
+public class librarian {
+    private static Scanner input = new Scanner(System.in);
 
-    private String username;
-    private String password;
-    private Scanner input = new Scanner(System.in);
+   public static void addBook() throws Exception {
+       try {
+           Connection conn = User.getConnection();
+           String query = "INSERT INTO current_inventory (" +
+                   " book_id," +
+                   "Title," +
+                   "Author) VALUES (?, ?, ?)";
 
-    librarian(String username, String password, String permissions)
-    {
-        super(username, password, permissions);
-    }
+           System.out.printf("Enter ID:");
+           int id = input.nextInt();
+           System.out.printf("Enter Title:");
+           String title = input.next();
+           System.out.printf("Enter Author:");
+           String author = input.next();
 
+           PreparedStatement st = conn.prepareStatement(query);
+           st.setInt(1, id);
+           st.setString(2, title);
+           st.setString(3, author);
+           st.executeUpdate();
+           st.close();
 
-    protected void issue_book(String title)
-    {
-        int index = searchByTitle(title);
-        if(index == -1)
-        {
-            System.out.println("Book not available");
-            return;
-        }
-        // getting current book and converting it to book out on issue object
-        book book_to_issue = currentBooks.get(index);
-        Date cur_date = new Date();
-        bookOutOnIssue my_book = new bookOutOnIssue(book_to_issue,cur_date);
-        booksOutOnIssue.add(my_book);
-        // removing book from current stock until it gets returned
-        currentBooks.remove(index);
-
-    }
-
-    protected void return_book(String title)
-    {
-        int index = searchForIssuedBook(title);
-        if(index == -1)
-        {
-            System.out.println("Book not found");
-            return;
-        }
-        // get current Book out on issue and turn it into regular book object to be stored in current stock
-        bookOutOnIssue my_book = booksOutOnIssue.get(index);
-        book returned_book = my_book.cur_book;
-        // remove special book object out of issued list
-        currentBooks.add(returned_book);
-        booksOutOnIssue.remove(index);
-    }
-
-    public int searchForIssuedBook(String title)
-    {
-        for(bookOutOnIssue novel: booksOutOnIssue)
-        {
-            if(novel.getCur_book().getName() != null && novel.getCur_book().getName().equalsIgnoreCase(title)){
-                int index = booksOutOnIssue.indexOf(novel);
-                return index;
-            }
-        }
-        return -1;
-    }
-
-
-
-
-    protected void deleteBook(String ID)
-    {
-        int index = currentIDs.indexOf(ID);
-        currentBooks.remove(index);
-        currentIDs.remove(index);
-    }
-
-    protected void addBook(String name, String author, String ID, String genre)
-    {
-        if(currentIDs.contains(ID))
-        {
-            System.out.println("Current ID is already taken plz generate another one");
-            return;
-        }
-        book Book = new book(name, author, ID, genre);
-        currentBooks.add(Book);
-        currentIDs.add(ID);
-    }
-
-    public void viewBooks()
-    {
-        for (book novel: currentBooks)
-        {
-            System.out.printf("%s: %s: %s\n", novel.getName(), novel.getAuthor(), novel.getID());
-        }
-        System.out.println();
-        if(currentBooks.size() == 0)
-        {
-            System.out.println("No books in stock");
-            return;
+           conn.close();
+       } catch (Exception e) {
+           System.err.println(e.getMessage());
+       }
+   }
+    public static void deleteBook() throws Exception {
+        try {
+            Connection conn = User.getConnection();
+            System.out.printf("Enter Id of book to delete");
+            int id = input.nextInt();
+            PreparedStatement st = conn.prepareStatement("DELETE FROM current_inventory WHERE book_id = ?");
+            st.setInt(1, id);
+            st.executeUpdate();
+            conn.close();
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
         }
     }
 
-    public ArrayList<book> getCurrentBooks()
+    public static void issueBook() throws Exception
     {
-        return currentBooks;
-    }
-
-    public void viewBooksThatAreIssued()
-    {
-        for(bookOutOnIssue novel: booksOutOnIssue)
+        try{
+        Connection conn = User.getConnection();
+            System.out.printf("Enter ID of book you are issuing:");
+        int id = input.nextInt();
+        PreparedStatement st = conn.prepareStatement("UPDATE current_inventory set Is_Availible=false WHERE book_id= "+ id);
+        st.executeUpdate();
+        st.close(); // can add issue date and return date
+        conn.close();
+        }catch(Exception exception)
         {
-            System.out.printf("Title: %s, Issue Date: %s, Date to be Returned: %s", novel.getCur_book().getName(), novel.getIssue_date(), novel.getReturn_date());
+            exception.printStackTrace();
         }
-        System.out.println();
-        if(booksOutOnIssue.size() == 0)
+    }
+    public static void returnBook() throws Exception
+    {
+        try{
+            Connection conn = User.getConnection();
+            System.out.printf("Enter ID of book you are returning:");
+            int id = input.nextInt();
+            PreparedStatement st = conn.prepareStatement("UPDATE current_inventory set Is_Availible=true WHERE book_id= "+ id);
+            st.executeUpdate();
+            st.close(); // can add issue date and return date
+            conn.close();
+        }catch(Exception exception)
         {
-            System.out.println("No books currently issued");
-            return;
+            exception.printStackTrace();
         }
     }
 
 
-    public ArrayList<bookOutOnIssue> getBooksOutOnIssues()
-    {
-        return booksOutOnIssue;
+
+
+
     }
 
 
 
 
 
-}
+
