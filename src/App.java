@@ -1,37 +1,22 @@
 import javax.swing.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.*;
 
 
-public class App {
+public class App{
     public static Scanner input = new Scanner(System.in);
 
+
     public static void main(String[] args) {
-        // create user interface
-        int response = checkUser();
-        if (response == 1)
-        {
-            librarianApp.runLibrarianMenu();
-        } else
-        {
-            userApp.runUserMenu();
-        }
+      login();
+
     }
 
-    private static int checkUser() {
-        int index = -1;
-        System.out.printf("Press 0 for User or 1 for Librarian\n");
-        do{
-            try{
-                index = input.nextInt();
-            } catch (InputMismatchException e)
-            {
-                System.out.println("Answer must be between 0 and 1 inclusive\n");
-            } finally {
-                input.nextLine();
-            }
-        } while (index != 1 && index != 0);
-        return index;
-    }
+
+
 
     private void menu()
     {

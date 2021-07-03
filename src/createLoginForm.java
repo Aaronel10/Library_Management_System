@@ -3,6 +3,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.lang.reflect.Array;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 
@@ -17,9 +21,9 @@ class CreateLoginForm extends JFrame implements ActionListener
   final JTextField textField1, textField2;
   ArrayList<User> users = new ArrayList<>();
   Admin aaron = new Admin("aaronel@gmail.com", "password123", "administrator");
+  public boolean isLibrarian;
 
-
-
+  JComboBox cb;
   //calling constructor
     CreateLoginForm()
     {
@@ -41,40 +45,81 @@ class CreateLoginForm extends JFrame implements ActionListener
         newPanel.add(textField1);
         newPanel.add(passwordLabel);
         newPanel.add(textField2);
+        String[] choices = {"", "Librarian", "User"};
+        cb = new JComboBox<>(choices);
+        cb.setVisible(true);
+        newPanel.add(cb);
+        cb.addActionListener(this);
         newPanel.add(button1);
 
         // set border to panel
         add(newPanel, BorderLayout.CENTER);
         setTitle("Login Form");
         // perform an action on button click
-        button1.addActionListener(this); // add action lister to button this just calls the action performed function when it gets clicked
+        button1.addActionListener(this); // add action lister to button this just calls the action performed function when it gets clicked;
 
     }
     public void actionPerformed(ActionEvent ae)
     {
+        if (ae.getSource() == cb)
+        {
+            if(cb.getSelectedItem() == "Librarian") {
+                isLibrarian = true;
+            }
+            if(cb.getSelectedItem() == "User")
+            {
+                isLibrarian = false;
+            }
+             return;
+        }
+
         String usernameValue = textField1.getText();
         String passwordValue = textField2.getText();
 
-        if(usernameValue.equals("aaronel@gmail.com") && passwordValue.equals("password123")) //means they entered the correct credentials
-        {
-            JOptionPane.showMessageDialog(this, "Login successful");
+        try {
+            Connection connection = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/library_database", "root", "rootpassword");
 
-        } else
-        {
-            //show error
+            Statement statement = connection.createStatement();
+
+            String src = "";
+            if (isLibrarian)
+            {
+                src = "librarian_accounts";
+            }else
+            {
+                src = "user_accounts";
+            }
+            ResultSet resultSet = statement.executeQuery("select username, password from " + src);
+
+
+            while(resultSet.next())
+            {
+                if(resultSet.getString(1)!= null && resultSet.getString(1).equals(usernameValue))
+                {
+                    if(resultSet.getString(2) != null && resultSet.getString(2).equals(passwordValue))
+                    {
+                        JOptionPane.showMessageDialog(this, "Login successful");
+
+                        JComponent comp = (JComponent) ae.getSource();
+                        Window win = SwingUtilities.getWindowAncestor(comp);
+                        win.dispose();
+                        return;
+                    }
+                }
+            }
+                //show error
             JOptionPane.showMessageDialog(this, "Not valid credentials");
-            System.exit(0);
-
+            JComponent comp = (JComponent) ae.getSource();
+            Window win = SwingUtilities.getWindowAncestor(comp);
+            win.dispose();
+        } catch (Exception e)
+        {
+            e.printStackTrace();
         }
 
-        JComponent comp = (JComponent) ae.getSource();
-        Window win = SwingUtilities.getWindowAncestor(comp);
-        win.dispose();
 
     }
 
 
-
 }
-
 
